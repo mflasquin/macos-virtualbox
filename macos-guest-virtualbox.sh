@@ -23,6 +23,7 @@ cpu_count=2                      # VM CPU cores, minimum 2
 memory_size=4096                 # VM RAM in MB, minimum 2048
 gpu_vram=128                     # VM video RAM in MB, minimum 34, maximum 128
 resolution="1280x800"            # VM display resolution
+cpu_profile="Intel Xeon X5482 3.20GHz"
 
 # The following commented commands, when executed on a genuine Mac,
 # may provide the values for NVRAM and EFI parameters required by iCloud,
@@ -93,6 +94,7 @@ pad_to_33_chars "cpu_count=${cpu_count}"                       "# VM CPU cores, 
 pad_to_33_chars "memory_size=${memory_size}"                   "# VM RAM in MB, minimum 2048"
 pad_to_33_chars "gpu_vram=${gpu_vram}"                         "# VM video RAM in MB, minimum 34, maximum 128"
 pad_to_33_chars "resolution=\"${resolution}\""                 "# VM display resolution"
+echo -e "cpu_profile=\"${cpu_profile}\""
 echo -ne "\nThese values may be customized as described in the documentation.\n
 ${highlight_color}Press enter to continue, CTRL-C to exit${default_color}"
 clear_input_buffer_then_read
@@ -685,6 +687,8 @@ VBoxManage setextradata "${vm_name}" \
   "ourhardworkbythesewordsguardedpleasedontsteal(c)AppleComputerInc"
 VBoxManage setextradata "${vm_name}" \
  "VBoxInternal/Devices/smc/0/Config/GetKeyFromRealSMC" 0
+VBoxManage modifyvm "${vm_name}" --cpu-profile "${cpu_profile}"
+VBoxManage modifyvm "${vm_name}" --cpuidremoveall
 }
 
 # Create the macOS base system virtual disk image
